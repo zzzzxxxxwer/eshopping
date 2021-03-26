@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshopping.dao.ItemMapper">
+
+    <select id="getById" resultMap="ItemMap">
+        SELECT * FROM item WHERE id = #{id}
+    </select>
+
+    <select id="getBySql" resultMap="ItemMap">
+        ${sql}
+    </select>
+
+    <select id="listBySql" resultMap="ItemMap">
+        ${sql}
+    </select>
+
+    <insert id="insertBySql">
+        <selectKey keyProperty="id" order="AFTER" resultType="Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        ${sql}
+    </insert>
+
+    <update id="updateBySql">
+        ${sql}
+    </update>
+
+    <select id="getAllUserByPage" resultMap="ItemMap">
+        select * FROM item limit #{page}, #{size}
+    </select>
+    <select id="getTotal" resultType="java.lang.Long">
+        select count(*) from item;
+    </select>
+    <update id="collect">
+        UPDATE item set collect_num=collect_num+1 where id=#{id}
+    </update>
+    <resultMap id="ItemMap" type="com.eshopping.pojo.Item">
+        <id property="id" column="id"/>
+        <result column="collect_num" property="collectNum"/>
+        <result column="sale_num" property="saleNum"/>
+        <result column="image_url" property="imageUrl"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="category_id" property="categoryId"/>
+    </resultMap>
+</mapper>
